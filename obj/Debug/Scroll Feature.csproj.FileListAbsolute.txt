@@ -1,0 +1,19 @@
+C:\Users\Asus\OneDrive\Masaüstü\Scroll Feature\bin\Debug\Scroll Feature.exe.config
+C:\Users\Asus\OneDrive\Masaüstü\Scroll Feature\bin\Debug\Scroll Feature.exe
+C:\Users\Asus\OneDrive\Masaüstü\Scroll Feature\bin\Debug\Scroll Feature.pdb
+C:\Users\Asus\OneDrive\Masaüstü\Scroll Feature\obj\Debug\Scroll Feature.csproj.AssemblyReference.cache
+C:\Users\Asus\OneDrive\Masaüstü\Scroll Feature\obj\Debug\Scroll_Feature.Form1.resources
+C:\Users\Asus\OneDrive\Masaüstü\Scroll Feature\obj\Debug\Scroll_Feature.Properties.Resources.resources
+C:\Users\Asus\OneDrive\Masaüstü\Scroll Feature\obj\Debug\Scroll Feature.csproj.GenerateResource.cache
+C:\Users\Asus\OneDrive\Masaüstü\Scroll Feature\obj\Debug\Scroll Feature.csproj.CoreCompileInputs.cache
+C:\Users\Asus\OneDrive\Masaüstü\Scroll Feature\obj\Debug\Scroll Feature.exe
+C:\Users\Asus\OneDrive\Masaüstü\Scroll Feature\obj\Debug\Scroll Feature.pdb
+C:\Users\Asus\OneDrive\Masaüstü\Scroll Feature\obj\Debug\Scroll Feature.exe.config
+C:\Users\Asus\OneDrive\Masaüstü\ScrollWheelFeature\obj\Debug\Scroll Feature.csproj.AssemblyReference.cache
+C:\Users\Asus\OneDrive\Masaüstü\ScrollWheelFeature\obj\Debug\Scroll Feature.exe.config
+C:\Users\Asus\OneDrive\Masaüstü\ScrollWheelFeature\obj\Debug\Scroll_Feature.Form1.resources
+C:\Users\Asus\OneDrive\Masaüstü\ScrollWheelFeature\obj\Debug\Scroll_Feature.Properties.Resources.resources
+C:\Users\Asus\OneDrive\Masaüstü\ScrollWheelFeature\obj\Debug\Scroll Feature.csproj.GenerateResource.cache
+C:\Users\Asus\OneDrive\Masaüstü\ScrollWheelFeature\obj\Debug\Scroll Feature.csproj.CoreCompileInputs.cache
+C:\Users\Asus\OneDrive\Masaüstü\ScrollWheelFeature\obj\Debug\Scroll Feature.exe
+C:\Users\Asus\OneDrive\Masaüstü\ScrollWheelFeature\obj\Debug\Scroll Feature.pdb
