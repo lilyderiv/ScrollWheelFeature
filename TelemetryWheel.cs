@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Globalization;
-using System.Net.NetworkInformation;
 using System.Windows.Forms;
 
 namespace Scroll_Feature
@@ -14,48 +13,38 @@ namespace Scroll_Feature
     {
         private List<string> packets = new List<string>();
         public int MaxItemsToKeep { get; set; } = 30;
-        public int ItemHeight { get; set; } = 30;
 
+        // Yarıçapı biraz küçülttük ki yazılar ekrana sığsın
+        public float WheelRadius { get; set; } = 60f;
+
+        // Açıyı 15'ten 25'e çıkardık. Böylece 2. ve 3. satırlar silindirin arkasına doğru çok daha sert yatacak.
+        public float AnglePerItem { get; set; } = 25f;
 
         public TelemetryWheel()
         {
             this.DoubleBuffered = true;
             this.BackColor = Color.FromArgb(30, 30, 30);
-            this.ForeColor = Color.White;
+            this.ForeColor = Color.DeepSkyBlue;
             this.Font = new Font("Segoe UI", 16, FontStyle.Bold);
         }
 
-        // Form1'den çağırılacak ana metod (ham string buraya gelir)
         public void AddPacket(string rawTelemetryData)
         {
             string formattedData = FormatTelemetry(rawTelemetryData);
-
-            // Eğer formatlama başarısız olduysa (eksik veri vb.) listeye ekleme
             if (string.IsNullOrEmpty(formattedData)) return;
 
             packets.Add(formattedData);
-
-            if (packets.Count > MaxItemsToKeep)
-            {
-                packets.RemoveAt(0);
-            }
+            if (packets.Count > MaxItemsToKeep) packets.RemoveAt(0);
 
             this.Invalidate();
         }
 
-        // Senin 17 parçalık "<...>, <...>" formatını çözen metod
         private string FormatTelemetry(string rawData)
         {
             try
             {
-                // Form1'deki mantığın aynısı: Virgül, < ve > işaretlerini atarak parçala
                 string[] parcalar = rawData.Split(new char[] { ',', '<', '>', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-                // Eğer eksik paket geldiyse (senin sisteminde 17 olması gerekiyor)
-                if (parcalar.Length < 17)
-                {
-                    return null; // Çizilmesi için null döndür, ekrana bozuk satır basmasın
-                }
+                if (parcalar.Length < 17) return null;
 
                 double inisHizi = ParseDoubleSafe(parcalar[6].Trim());
                 double latitude = ParseDoubleSafe(parcalar[9].Trim());
@@ -63,19 +52,13 @@ namespace Scroll_Feature
 
                 return $"Hız: {inisHizi:F2} m/s | Enlem: {latitude:F4} | Boylam: {longitude:F4}";
             }
-            catch
-            {
-                return null;
-            }
+            catch { return null; }
         }
 
-        // Nokta/virgül karmaşasını çözen güvenli dönüştürücü (Noktalı veya virgüllü gelse de çevirir)
         private double ParseDoubleSafe(string val)
         {
             if (double.TryParse(val.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out double result))
-            {
                 return result;
-            }
             return 0.0;
         }
 
@@ -95,18 +78,24 @@ namespace Scroll_Feature
             {
                 int age = (packets.Count - 1) - i;
 
-                float itemY = centerY - (age * ItemHeight);
+                double angleDegrees = age * AnglePerItem;
 
-                if (itemY < -ItemHeight) break;
+                if (angleDegrees >= 90) break;
 
-                float scale = Math.Max(0.4f, 1.0f - (age * 0.15f));
+                double angleRadians = angleDegrees * Math.PI / 180.0;
 
-                // Opaklık hızını düşürdük (35) ki daha fazla geçmiş satır ekranda kalabilsin
-                int opacity = (int)Math.Max(0, 255 - (age * 35));
+                float itemY = centerY - (float)(WheelRadius * Math.Sin(angleRadians));
 
-                if (opacity <= 0) continue;
+                float perspectiveScale = (float)Math.Cos(angleRadians);
 
-                using (Font scaledFont = new Font(this.Font.FontFamily, this.Font.Size * scale, FontStyle.Bold))
+                // Yatayda biraz daha yavaş, dikeyde ise kosinüs kadar (perspektif) küçült
+                float scaleX = Math.Max(0.7f, 1.0f - (age * 0.04f));
+                float scaleY = Math.Max(0.1f, perspectiveScale);
+
+                int opacity = (int)(255 * perspectiveScale);
+                if (opacity <= 5) continue;
+
+                using (Font scaledFont = new Font(this.Font.FontFamily, this.Font.Size * scaleX, FontStyle.Bold))
                 using (Brush brush = new SolidBrush(Color.FromArgb(opacity, this.ForeColor)))
                 {
                     SizeF textSize = g.MeasureString(packets[i], scaledFont);
@@ -114,10 +103,29 @@ namespace Scroll_Feature
                     float textX = (this.Width - textSize.Width) / 2;
                     float textY = itemY - (textSize.Height / 2);
 
+                    // --- DÜZELTİLMİŞ 3D EZİLME (SQUASH) EFEKTİ ---
+                    // 1. Graphics'in mevcut durumunu kaydet (Bu yöntem new Matrix() ten çok daha sağlıklıdır)
+                    GraphicsState state = g.Save();
+
+                    // 2. Dönüşüm merkezini yazının 'Tam Ortasına' taşı
+                    float textCenterX = textX + (textSize.Width / 2);
+                    float textCenterY = textY + (textSize.Height / 2);
+
+                    g.TranslateTransform(textCenterX, textCenterY);
+
+                    // 3. Y ekseninde basıklık ver (Geriye yatma hissi)
+                    g.ScaleTransform(1.0f, scaleY);
+
+                    // 4. Dönüşüm merkezini eski yerine al
+                    g.TranslateTransform(-textCenterX, -textCenterY);
+
+                    // 5. Çizimi yap
                     g.DrawString(packets[i], scaledFont, brush, textX, textY);
+
+                    // 6. Graphics'i bir sonraki çizim için temiz duruma (eski haline) döndür
+                    g.Restore(state);
                 }
             }
         }
-
     }
 }

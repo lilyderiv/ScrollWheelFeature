@@ -36,7 +36,6 @@
             this.telemetryWheel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.telemetryWheel.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
             this.telemetryWheel.ForeColor = System.Drawing.Color.DeepSkyBlue;
-            this.telemetryWheel.ItemHeight = 30;
             this.telemetryWheel.Location = new System.Drawing.Point(30, 63);
             this.telemetryWheel.MaxItemsToKeep = 30;
             this.telemetryWheel.Name = "telemetryWheel";
