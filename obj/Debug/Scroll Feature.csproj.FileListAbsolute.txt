@@ -17,3 +17,6 @@ C:\Users\Asus\OneDrive\Masaüstü\ScrollWheelFeature\obj\Debug\Scroll Feature.cs
 C:\Users\Asus\OneDrive\Masaüstü\ScrollWheelFeature\obj\Debug\Scroll Feature.csproj.CoreCompileInputs.cache
 C:\Users\Asus\OneDrive\Masaüstü\ScrollWheelFeature\obj\Debug\Scroll Feature.exe
 C:\Users\Asus\OneDrive\Masaüstü\ScrollWheelFeature\obj\Debug\Scroll Feature.pdb
+C:\Users\Asus\OneDrive\Masaüstü\ScrollWheelFeature\bin\Debug\Scroll Feature.exe.config
+C:\Users\Asus\OneDrive\Masaüstü\ScrollWheelFeature\bin\Debug\Scroll Feature.exe
+C:\Users\Asus\OneDrive\Masaüstü\ScrollWheelFeature\bin\Debug\Scroll Feature.pdb
